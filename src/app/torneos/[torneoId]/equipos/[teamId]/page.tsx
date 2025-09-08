@@ -3,23 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { API_URL } from "@/config";
-
-interface Tournament {
-  _id: string;
-  name: string;
-  format: string;
-  status: string;
-  image?: string;
-  maxTeams?: number;
-  acceptedTeams: any[];
-  requestTeams: any[];
-  createdAt: string;
-  organizerId?: string;
-  champion?: any;
-}
+import { Torneo } from "@/app/interfaces/torneos";
 
 export default function TorneoDetailPage({ params }: { params: { id: string } }) {
-  const [torneo, setTorneo] = useState<Tournament | null>(null);
+  const [torneo, setTorneo] = useState<Torneo | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -106,7 +93,7 @@ export default function TorneoDetailPage({ params }: { params: { id: string } })
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              Equipos inscritos: {torneo.acceptedTeams.length}
+              Equipos inscritos: {torneo.teams.length}
             </div>
 
             {torneo.champion && (
@@ -121,9 +108,9 @@ export default function TorneoDetailPage({ params }: { params: { id: string } })
         <div className="bg-white rounded-lg shadow-lg border border-gray-300 p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Equipos Participantes</h2>
           
-          {torneo.acceptedTeams.length > 0 ? (
+          {torneo.teams.length > 0 ? (
             <div className="space-y-3">
-              {torneo.acceptedTeams.map((equipo) => (
+              {torneo.teams.map((equipo) => (
                 <Link 
                   key={equipo._id} 
                   href={`/torneos/${params.id}/equipos/${equipo._id}`}

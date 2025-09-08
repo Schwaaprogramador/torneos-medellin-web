@@ -3,20 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { API_URL } from "@/config";
+import { Torneo } from "../interfaces/torneos";
 
-interface Tournament {
-  _id: string;
-  name: string;
-  format: string;
-  status: string;
-  image?: string;
-  maxTeams?: number;
-  acceptedTeams: any[];
-  createdAt: string;
-}
 
 export default function TorneosPage() {
-  const [torneos, setTorneos] = useState<Tournament[]>([]);
+  const [torneos, setTorneos] = useState<Torneo[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -70,7 +61,7 @@ export default function TorneosPage() {
               )}
               <div className="absolute top-3 right-3">
                 <span className="bg-yellow-500 text-black px-2 py-1 rounded-full text-xs font-bold">
-                  {torneo.acceptedTeams?.length || 0} equipos
+                  {torneo.teams?.length || 0} equipos
                 </span>
               </div>
             </div>

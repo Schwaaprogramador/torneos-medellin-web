@@ -4,24 +4,20 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { API_URL } from "@/config";
+import { Torneo } from "@/app/interfaces/torneos";
 
-interface Tournament {
+interface Noticia {
   _id: string;
-  name: string;
-  format: string;
-  status: string;
-  image?: string;
-  maxTeams?: number;
-  acceptedTeams: any[];
-  requestTeams: any[];
+  title: string;
+  body: string;
+  img?: string;
   createdAt: string;
-  organizerId?: string;
-  champion?: any;
+  escenarioId?: string;
 }
 
 export default function TorneoDetailPage() {
-    const params = useParams();
-  const [torneo, setTorneo] = useState<Tournament | null>(null);
+  const params = useParams();
+  const [torneo, setTorneo] = useState<Torneo | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,18 +54,26 @@ export default function TorneoDetailPage() {
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
-      {/* Header */}
-      <div className="bg-gray-800 rounded-lg p-6 text-white mb-6">
-        <h1 className="text-3xl font-bold text-yellow-400 mb-2">{torneo.name}</h1>
-        <div className="flex items-center space-x-4">
-          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-            {torneo.format}
-          </span>
-          <span className="bg-yellow-500 text-black px-2 py-1 rounded-full text-xs font-bold">
-            {torneo.status}
-          </span>
+      {/* Banner de imagen */}
+      {torneo.image && (
+        <div className="w-full h-64 mb-6 relative rounded-lg overflow-hidden">
+          <img 
+            src={torneo.image} 
+            alt={torneo.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
+          <h1 className="absolute bottom-6 left-6 text-4xl font-bold text-white">{torneo.name}</h1>
+          <div className="absolute bottom-6 right-6 flex items-center space-x-4">
+            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+              {torneo.format}
+            </span>
+            <span className="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-bold">
+              {torneo.status}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Contenido principal */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -77,16 +81,6 @@ export default function TorneoDetailPage() {
         <div className="lg:col-span-2 bg-white rounded-lg shadow-lg border border-gray-300 p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Detalles del Torneo</h2>
           
-          {torneo.image && (
-            <div className="mb-4">
-              <img 
-                src={torneo.image} 
-                alt={torneo.name}
-                className="w-full h-48 object-cover rounded-lg"
-              />
-            </div>
-          )}
-
           <div className="space-y-4">
             <div className="flex items-center text-sm text-gray-600">
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +102,7 @@ export default function TorneoDetailPage() {
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              Equipos inscritos: {torneo.acceptedTeams.length}
+              Equipos inscritos: {torneo.teams.length}
             </div>
 
             {torneo.champion && (
@@ -123,9 +117,9 @@ export default function TorneoDetailPage() {
         <div className="bg-white rounded-lg shadow-lg border border-gray-300 p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Equipos Participantes</h2>
           
-          {torneo.acceptedTeams.length > 0 ? (
+          {torneo.teams.length > 0 ? (
             <div className="space-y-3">
-              {torneo.acceptedTeams.map((equipo) => (
+              {torneo.teams.map((equipo) => (
                 <Link 
                   key={equipo._id} 
                   href={`/torneos/${params.id}/equipos/${equipo._id}`}
@@ -153,6 +147,38 @@ export default function TorneoDetailPage() {
               <p className="text-sm text-gray-500">No hay solicitudes pendientes</p>
             )}
           </div>
+        </div>
+
+        {/* Noticias */}
+        <div className="lg:col-span-3 bg-white rounded-lg shadow-lg border border-gray-300 p-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Noticias del Torneo</h2>
+          
+          {torneo.noticias && torneo.noticias.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {torneo.noticias.map((noticia: Noticia) => (
+                <div key={noticia._id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+                  {noticia.img && (
+                    <div className="h-48 overflow-hidden">
+                      <img 
+                        src={noticia.img} 
+                        alt={noticia.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{noticia.title}</h3>
+                    <p className="text-sm text-gray-500 mb-2">
+                      {new Date(noticia.createdAt).toLocaleDateString('es-ES')}
+                    </p>
+                    <p className="text-gray-600 line-clamp-3">{noticia.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-600 text-center py-8">No hay noticias disponibles</p>
+          )}
         </div>
       </div>
     </div>
