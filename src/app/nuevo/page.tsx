@@ -8,7 +8,7 @@ type FormData = {
   email: string;
   password: string;
   confirmPassword: string;
-  img: string;
+  image: string;
 };
 
 type FormErrors = {
@@ -25,7 +25,7 @@ export default function PlayerRegistration() {
     email: '',
     password: '',
     confirmPassword: '',
-    img: ''
+    image: ''
   });
   
   const [errors, setErrors] = useState<FormErrors>({
@@ -133,7 +133,7 @@ return (
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+          className="w-full text-black p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
           required
         />
         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
@@ -146,7 +146,7 @@ return (
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+          className="w-full text-black p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
           required
         />
         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -156,10 +156,10 @@ return (
         <label className="block text-sm font-medium mb-1 text-gray-700">Contraseña</label>
         <input
           type="password"
+          className="w-full text-black p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
           required
         />
         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
@@ -172,7 +172,7 @@ return (
           name="confirmPassword"
           value={formData.confirmPassword}
           onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+          className="w-full text-black p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
           required
         />
         {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
@@ -182,10 +182,10 @@ return (
         <label className="block text-sm font-medium mb-1 text-gray-700">Imagen de Perfil (Opcional)</label>
         <input
           type="text"
-          name="img"
-          value={formData.img}
+          name="image"
+          value={formData.image}
           onChange={handleChange}
-          className="w-full p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+          className="w-full text-black p-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
           placeholder="URL de la imagen"
         />
       </div>
